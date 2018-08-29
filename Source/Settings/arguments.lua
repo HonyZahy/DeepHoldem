@@ -8,7 +8,7 @@ torch.setdefaulttensortype('torch.FloatTensor')
 local params = {}
 
 --- whether to run on GPU
-params.gpu = false
+params.gpu = true
 --- list of pot-scaled bet sizes to use in tree
 -- @field params.bet_sizing
 params.bet_sizing = {{1},{1},{1}}
