@@ -28,8 +28,12 @@ function M:_init()
     end
   end
   if self._texas_lookup == nil then
-    if os.isfile("./Game/Evaluation/HandRanksTensor.dat") then
+
+    local file_found=io.open("./Game/Evaluation/HandRanksTensor.dat", "r")
+    if file_found ~= nill then
+      io.close(file_found)
       self._texas_lookup = torch.load("./Game/Evaluation/HandRanksTensor.dat")
+      print("load Tensor")
     else
       local f = assert(io.open("./Game/Evaluation/HandRanks.dat", "rb"))
       local data = f:read("*all")
