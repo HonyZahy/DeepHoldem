@@ -33,7 +33,7 @@ function M:_init()
       self._river_ihr[key] = win*200 + tie
     end
     f:close()
-    torch.save('riverihrarray.dat', self._river_ihr)
+    --torch.save('riverihrarray.dat', self._river_ihr)
 
     local f = assert(io.open("./Nn/Bucketing/rcats.dat", "r"))
     self.river_buckets = f:read("*number")
@@ -44,7 +44,7 @@ function M:_init()
       self._ihr_pair_to_bucket[win * 1000 + tie] = i
     end
     f:close()
-    torch.save('ihrpairtobucketrarray.dat', self._ihr_pair_to_bucket)
+    --torch.save('ihrpairtobucketrarray.dat', self._ihr_pair_to_bucket)
   end
 
   if self._turn_means == nil then
@@ -59,7 +59,7 @@ function M:_init()
       self._turn_means[i] = dist
     end
     f:close()
-    torch.save('turn_meansarray.dat', self._turn_means)
+    --torch.save('turn_meansarray.dat', self._turn_means)
   end
 
   if self._turn_cats == nil then
@@ -78,7 +78,7 @@ function M:_init()
       assert(cat <= 1000 and cat >= 1, "cat = " .. cat)
     end
     f:close()
-    torch.save('turn_dist_catsarray.dat', self._turn_cats)
+    --torch.save('turn_dist_catsarray.dat', self._turn_cats)
   end
   if self._flop_cats == nil then
     self._flop_cats = {}
@@ -96,7 +96,7 @@ function M:_init()
       assert(cat <= 1000 and cat >= 1, "cat = " .. cat)
     end
     f:close()
-    torch.save('flop_dist_catsarray.dat', self._flop_cats)
+    --torch.save('flop_dist_catsarray.dat', self._flop_cats)
   end
 end
 
