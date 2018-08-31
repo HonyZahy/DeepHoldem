@@ -46,7 +46,7 @@ function M:_init()
     if file_found ~= nill then
       io.close(file_found)
       self._ihr_pair_to_bucket = torch.load("./Nn/Bucketing/ihrpairtobucketrarray.dat")
-      self.river_buckets = torch.load("./Nn/Bucketing/river_bucketarray.dat")
+      self.river_buckets = torch.load("./Nn/Bucketing/river_bucketsarray.dat")
       print("2 loaded ihrpairtobucketrarray")
     else
       local f = assert(io.open("./Nn/Bucketing/rcats.dat", "r"))
