@@ -42,16 +42,15 @@ function M:_init()
       --torch.save('riverihrarray.dat', self._river_ihr)
     end
     
---    file_found = io.open("./Nn/Bucketing/ihrpairtobucketrarray.dat", "r")
-    file_found = nill
+    file_found = io.open("./Nn/Bucketing/ihrpairtobucketrarray.dat", "r")
     if file_found ~= nill then
       io.close(file_found)
       self._ihr_pair_to_bucket = torch.load("./Nn/Bucketing/ihrpairtobucketrarray.dat")
+      self.river_buckets = torch.load("./Nn/Bucketing/river_bucketarray.dat")
       print("2 loaded ihrpairtobucketrarray")
     else
       local f = assert(io.open("./Nn/Bucketing/rcats.dat", "r"))
       self.river_buckets = f:read("*number")
-torch.save('river_bucketsarray.dat', self.river_buckets)
       self._ihr_pair_to_bucket = {}
       for i = 1, self.river_buckets do
         local win = f:read("*number")
