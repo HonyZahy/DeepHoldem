@@ -43,6 +43,7 @@ function M:_init()
     end
     
 --    file_found = io.open("./Nn/Bucketing/ihrpairtobucketrarray.dat", "r")
+    file_found = nill
     if file_found ~= nill then
       io.close(file_found)
       self._ihr_pair_to_bucket = torch.load("./Nn/Bucketing/ihrpairtobucketrarray.dat")
