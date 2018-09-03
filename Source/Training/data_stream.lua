@@ -72,7 +72,7 @@ function DataStream:__init(street)
   local valid_count = num_valid * arguments.gen_batch_size
 
   self.train_data_count = train_count
-  assert(self.train_data_count >= arguments.train_batch_size, 'Training data count has to be greater than a train batch size!')
+  assert(self.train_data_count >= arguments.train_batch_size, 'Training data count has to be greater than a train batch size! train_count: ' .. self.train_data_count .. '   train_batch_count: ' .. arguments.train_batch_size)
   self.train_batch_count = self.train_data_count / arguments.train_batch_size
   self.valid_data_count = valid_count
   assert(self.valid_data_count >= arguments.train_batch_size, 'Validation data count has to be greater than a train batch size!')
