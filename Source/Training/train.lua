@@ -85,6 +85,9 @@ function M:train(network, data_stream, epoch_count)
     M.criterion = M.criterion:cuda()
   end
 
+  M.min_validation_loss = 1.0
+  M.epoch_min_validation_loss = 0
+  
   local state = {learningRate = arguments.learning_rate}
   local lossSum = 0
   local optim_func = optim.adam
@@ -125,7 +128,14 @@ function M:train(network, data_stream, epoch_count)
     end
 
     local valid_loss = valid_loss_sum / data_stream.valid_batch_count
-    print(string.format("Validation loss: %f", valid_loss))
+    
+    if M.min_validation_loss > valid_loss then
+      M.min_validation_loss = valid_loss
+      M.epoch_min_validation_loss = epoch
+    end
+      
+      
+    print(string.format("Validation loss: %f  Last minimum found: %d epoch back", valid_loss, epoch - M.epoch_min_validation_loss))
     print('Epoch took: ', timer:time().real)
 
     --saving the model
