@@ -18,11 +18,12 @@ local M = {}
 -- @param epoch the current epoch number
 -- @param valid_loss the validation loss of the current network
 -- @local
-function  M:_save_model(model, epoch, valid_loss)
+function  M:_save_model(model, epoch, valid_loss, learningRate)
 
   local model_information = {}
   model_information.epoch = epoch
   model_information.valid_loss = valid_loss
+  model_information.learningRate = learningRate
   model_information.gpu = arguments.gpu
 
   local path = arguments.model_path
@@ -129,7 +130,7 @@ function M:train(network, data_stream, epoch_count)
     print(epoch)
     if epoch % arguments.save_epoch == 0 then
       print("SAVING MODEL")
-      self:_save_model(network, epoch, valid_loss)
+      self:_save_model(network, epoch, valid_loss, state.learningRate)
       print("SAVED")
       local f = io.open("learningRate.txt", "r")
       if f then
