@@ -131,6 +131,13 @@ function M:train(network, data_stream, epoch_count)
       print("SAVING MODEL")
       self:_save_model(network, epoch, valid_loss)
       print("SAVED")
+      local f = io.open("learningRate.txt", "r")
+      if f then
+        local num = f:read("*number")
+        state.learningRate = num
+        f:close() 
+      end
+
     end
   end
   --end of train loop
