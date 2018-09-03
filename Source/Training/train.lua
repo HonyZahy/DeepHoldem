@@ -129,7 +129,7 @@ function M:train(network, data_stream, epoch_count)
     print('Epoch took: ', timer:time().real)
 
     --saving the model
-    print(epoch)
+    print(epoch .. ' / ' .. epoch_count)
     if epoch % arguments.save_epoch == 0 then
       print("SAVING MODEL")
       self:_save_model(network, epoch, valid_loss, state.learningRate)
