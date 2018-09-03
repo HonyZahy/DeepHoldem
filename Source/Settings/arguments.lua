@@ -33,7 +33,7 @@ params.cfr_skip_iters = 500
 --- how many poker situations are solved simultaneously during data generation
 params.gen_batch_size = 10
 --- how many poker situations are used in each neural net training batch
-params.train_batch_size = 1000000
+params.train_batch_size = 100000
 --- path to the solved poker situation data used to train the neural net
 params.data_path = '../Data/TrainSamples/'
 --- path to the neural net model
