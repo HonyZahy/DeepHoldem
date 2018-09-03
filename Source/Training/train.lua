@@ -96,6 +96,9 @@ function M:train(network, data_stream, epoch_count)
     if epoch == 50 then
       state.learningRate = state.learningRate / 10
     end
+    
+    --state.learningRate = arguments.learning_rate 
+    
     M.network:evaluate(false)
     for i=1, data_stream:get_train_batch_count() do
       local inputs, targets, mask = data_stream:get_train_batch(i)
@@ -127,6 +130,7 @@ function M:train(network, data_stream, epoch_count)
     if epoch % arguments.save_epoch == 0 then
       print("SAVING MODEL")
       self:_save_model(network, epoch, valid_loss)
+      print("SAVED")
     end
   end
   --end of train loop
