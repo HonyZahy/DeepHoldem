@@ -107,7 +107,7 @@ function M:train(network, data_stream, epoch_count)
       lossSum = lossSum + loss[1]
     end
 
-    print(string.format("Training loss: %f", lossSum / data_stream.train_batch_count))
+    print(string.format("Training loss: %f   learningRate: %f", lossSum / data_stream.train_batch_count, state.learningRate))
 
     M.network:evaluate(true)
     --check validation loss
