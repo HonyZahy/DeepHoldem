@@ -154,7 +154,7 @@ function M:generate_data_file(data_count, file_name, street)
     torch.save(arguments.data_path  .. train_folder .. basename .. '.inputs', inputs:float())
     torch.save(arguments.data_path  .. train_folder .. basename .. '.targets', targets:float())
     
-    print('avgTime: ' .. (startTime:time().real / batch) )
+    io.write('avgTime: ' .. (startTime:time().real / batch) .. '    ')
     
   end
 end
