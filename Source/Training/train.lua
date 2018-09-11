@@ -38,7 +38,7 @@ function  M:_save_model(model, epoch, valid_loss, learningRate)
   torch.save(model_file_name, model)
   torch.save(information_file_name, model_information)
   
-  torch.save(information_file_name .. '_txt', model_information, 'ascii')
+  torch.save(information_file_name .. '.txt', model_information, 'ascii')
 end
 
 --- Function passed to torch's [optim package](https://github.com/torch/optim).
