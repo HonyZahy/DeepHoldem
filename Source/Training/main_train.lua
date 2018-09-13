@@ -20,6 +20,7 @@ local f = io.open("nn.model", "r")
 if f then
         f:close() 
 	network = torch.load("nn.model")
+	print("nn.model loaded")
 end
 	
 
