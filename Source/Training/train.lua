@@ -86,7 +86,7 @@ function M:train(network, data_stream, epoch_count)
   end
 
   M.min_validation_loss = 1.0
-  M.epoch_min_validation_loss = 0
+  M.epoch_num_min_validation_loss = 0
   
   local state = {learningRate = arguments.learning_rate}
   local lossSum = 0
@@ -113,7 +113,7 @@ function M:train(network, data_stream, epoch_count)
       lossSum = lossSum + loss[1]
     end
 
-    print(string.format("Training loss: %f   learningRate: %f", lossSum / data_stream.train_batch_count, state.learningRate))
+    print(string.format("Training loss  : %f  learningRate: %f", lossSum / data_stream.train_batch_count, state.learningRate))
 
     M.network:evaluate(true)
     --check validation loss
@@ -128,14 +128,16 @@ function M:train(network, data_stream, epoch_count)
     end
 
     local valid_loss = valid_loss_sum / data_stream.valid_batch_count
-    
+
+    local progress = math.floor((1 - M.min_validation_loss / valid_loss) * 100 * 1000) / 1000
+
     if M.min_validation_loss > valid_loss then
       M.min_validation_loss = valid_loss
-      M.epoch_min_validation_loss = epoch
+      M.epoch_num_min_validation_loss = epoch
     end
       
       
-    print(string.format("Validation loss: %f  Last minimum found: %d epoch back", valid_loss, epoch - M.epoch_min_validation_loss))
+    print(string.format("Validation loss: %f  Progress: %f Last minimum found: %d epoch back", valid_loss, progress, epoch - M.epoch_num_min_validation_loss))
     print('Epoch took: ', timer:time().real)
 
     --saving the model

@@ -61,6 +61,13 @@ function DataStream:__init(street)
   self.goodfiles = goodfiles
   print(numfiles .. " good files")
 
+  -- write into file
+  local file = io.open('good_files.txt', 'w')
+  for i = 1, numfiles do
+    file:write(goodfiles[i] .. '  ' .. i)
+  end
+  file:close()
+
   self.bucket_count = bucketer:get_bucket_count(street)
   self.target_size = self.bucket_count * constants.players_count
   self.input_size = self.bucket_count * constants.players_count + 1
