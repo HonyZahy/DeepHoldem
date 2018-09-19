@@ -68,10 +68,10 @@ function DataStream:__init(street)
   end
 
   local good_files_name = path .. '/good_files.table'
-	local f = io.open(good_files_name, "r")
+	local f = io.open('good_files.table', "r")
 	if f then
 		f:close() 
-		self.goodfiles = torch.load(good_files_name)
+		self.goodfiles = torch.load('good_files.table')
 	else
 		torch.save(good_files_name, self.goodfiles)
 	end
