@@ -60,12 +60,21 @@ function DataStream:__init(street)
 
   self.goodfiles = goodfiles
 
-  -- write into file
-  local file = io.open('good_files.txt', 'w')
-  for i = 1, numfiles do
-    file:write(goodfiles[i] .. '  ' .. i ..'\n')
+  local path = arguments.model_path
+  if game_settings.nl then
+    path = path .. "NoLimit/"
+  else
+    path = path .. "Limit/"
   end
-  file:close()
+
+  local good_files_name = path .. '/good_files.table'
+	local f = io.open(good_files_name, "r")
+	if f then
+		f:close() 
+		self.goodfiles = torch.load(good_files_name)
+	else
+		torch.save(good_files_name, self.goodfiles)
+	end
 
   print(numfiles .. " good files")
 
