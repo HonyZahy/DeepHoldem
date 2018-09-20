@@ -98,6 +98,8 @@ function M:train(network, data_stream, epoch_count)
     timer:reset()
     data_stream:start_epoch(epoch)
     lossSum = 0
+	local loss_min = 10000000.0
+	local loss_max = 0
 
     if epoch == 50 then
       state.learningRate = state.learningRate / 10
@@ -111,13 +113,18 @@ function M:train(network, data_stream, epoch_count)
       assert(mask)
       local _, loss = optim_func(function (x) return feval(x, inputs, targets, mask) end, M.params, state)
       lossSum = lossSum + loss[1]
+	  loss_min = math.min(loss_min, loss[1])
+	  loss_max = math.max(loss_max, loss[1])
     end
 
-    print(string.format("Training loss  : %f  learningRate: %f", lossSum / data_stream.train_batch_count, state.learningRate))
+    print(string.format("Training loss  : %f  min: %f  max: %f  learningRate: %f", lossSum / data_stream.train_batch_count, loss_min, loss_max, state.learningRate))
 
     M.network:evaluate(true)
     --check validation loss
     local valid_loss_sum = 0
+	local valid_loss_min = 10000000.0
+	local valid_loss_max = 0
+	
     for i=1, data_stream:get_valid_batch_count() do
 
       local inputs, targets, mask = data_stream:get_valid_batch(i)
@@ -125,11 +132,13 @@ function M:train(network, data_stream, epoch_count)
       local outputs = M.network:forward(inputs)
       local loss = M.criterion:forward(outputs, targets, mask)
       valid_loss_sum = valid_loss_sum + loss
+	  valid_loss_min = math.min(valid_loss_min, loss)
+	  valid_loss_max = math.max(valid_loss_max, loss)
     end
 
     local valid_loss = valid_loss_sum / data_stream.valid_batch_count
 
-    local progress = math.floor((1 - M.min_validation_loss / valid_loss) * 100 * 1000) / 1000
+    local progress = math.floor((M.min_validation_loss / valid_loss - 1) * 100 * 1000) / 1000
 
     if M.min_validation_loss > valid_loss then
       M.min_validation_loss = valid_loss
@@ -137,8 +146,9 @@ function M:train(network, data_stream, epoch_count)
     end
       
       
-    print(string.format("Validation loss: %f  Progress: %f Last minimum found: %d epoch back", valid_loss, progress, epoch - M.epoch_num_min_validation_loss))
-    print('Epoch took: ', timer:time().real, '  Time stamp: ' , os.date("%H:%M"))
+    print(string.format("Validation loss: %f   min: %f  max: %f", valid_loss, valid_loss_min, valid_loss_max))
+    print(string.format("Validation progress: %f Last minimum found: %d epoch back", progress, epoch - M.epoch_num_min_validation_loss))
+    print('Epoch took: ', timer:time().real, '  Timestamp: ' , os.date("%H:%M"))
 
     --saving the model
     print(epoch .. ' / ' .. epoch_count)
