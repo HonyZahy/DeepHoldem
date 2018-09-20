@@ -72,9 +72,10 @@ function DataStream:__init(street)
 	if f then
 		f:close() 
 		self.goodfiles = torch.load('good_files.table')
-	else
-		torch.save(good_files_name, self.goodfiles)
+		print("list of good files load from backup")		
 	end
+	
+	torch.save(good_files_name, self.goodfiles)
 
   print(numfiles .. " good files")
 
