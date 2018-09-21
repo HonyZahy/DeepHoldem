@@ -73,10 +73,13 @@ function DataStream:__init(street)
 		f:close() 
 		self.goodfiles = torch.load('good_files.table')
 		print("list of good files loaded from backup")		
+		
+		
+		
+		
+		
 	end
 	
-	torch.save(good_files_name, self.goodfiles)
-
   print(numfiles .. " good files")
 
   self.bucket_count = bucketer:get_bucket_count(street)
@@ -89,6 +92,10 @@ function DataStream:__init(street)
   local train_count = num_train * arguments.gen_batch_size
   local valid_count = num_valid * arguments.gen_batch_size
 
+  self.goodfiles['train_count'] = train_count
+  self.goodfiles['valid_count'] = valid_count
+  torch.save(good_files_name, self.goodfiles)
+  
   self.train_data_count = train_count
   assert(self.train_data_count >= arguments.train_batch_size, 'Training data count has to be greater than a train batch size! train_count: ' .. self.train_data_count .. '   train_batch_count: ' .. arguments.train_batch_size)
   self.train_batch_count = self.train_data_count / arguments.train_batch_size

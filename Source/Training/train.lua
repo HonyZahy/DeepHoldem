@@ -146,9 +146,9 @@ function M:train(network, data_stream, epoch_count)
     end
       
       
-    print(string.format("Validation loss: %f   min: %f  max: %f", valid_loss, valid_loss_min, valid_loss_max))
+    print(string.format("Validation loss: %f  min: %f  max: %f", valid_loss, valid_loss_min, valid_loss_max))
     print(string.format("Validation progress: %f Last minimum found: %d epoch back", progress, epoch - M.epoch_num_min_validation_loss))
-    print('Epoch took: ', timer:time().real, '  Timestamp: ' , os.date("%H:%M"))
+    print('Epoch took: ', timer:time().real, '  Timestamp: ' , os.date("%H:%M") .. ' +2h')
 
     --saving the model
     print(epoch .. ' / ' .. epoch_count)
