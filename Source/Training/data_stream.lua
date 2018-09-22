@@ -46,7 +46,7 @@ function DataStream:__init(street)
   local numfiles = 0
 
   local goodfiles = {}
-  local name_file = {}
+  local new_name_file = {}
 
   for filename,_ in pairs(filenames) do
     local res = string.find(filename, ".inputs")
@@ -55,7 +55,7 @@ function DataStream:__init(street)
       if filenames[targetname] ~= nil then
         numfiles = numfiles + 1
         goodfiles[numfiles] = filename:sub(0,res)
-		name_file[goodfiles[numfiles]] = true
+		new_name_file[goodfiles[numfiles]] = true
       end
     end
   end
@@ -73,18 +73,48 @@ function DataStream:__init(street)
 	local f = io.open('good_files.table', "r")
 	if f then
 		f:close() 
-		-- local 
-		self.goodfiles = torch.load('good_files.table')
+		local arr = torch.load('good_files.table')
 		print("list of good files loaded from backup")		
 		
-		-- for i=1, arr['train_count'] do
-			
+		for i=1, arr['numfiles'] do
+			new_name_file[arr[i]] = false		
+		end
 		
+		-- insert old train data
+		local id = 0
+		local goodfiles_complete = {}
+		for i=1, arr['num_train'] do
+			id = id + 1
+			goodfiles_complete[id] = arr[i]
+		end
 		
+		-- insert new data in middle
+		local new_data_num =  0
+		for i=1, numfiles do
+			local name = self.goodfiles[i]
+			if new_name_file[name] then
+				id = id + 1
+				goodfiles_complete[id] = name
+				new_data_num = new_data_num + 1
+			end
+		end
 		
+		-- insert old valid data
+		for i=arr['num_train'] + 1, arr['numfiles'] do
+			id = id + 1
+			goodfiles_complete[id] = arr[i]
+		end
+		
+		self.goodfiles = goodfiles_complete
+		
+		print(arr['num_train'] .. " old train files")
+		print(arr['num_valid'] .. " old valid files")
+		print(new_data_num .. " new data files")
+		print((arr['num_train'] + arr['num_valid'] + new_data_num) .. " total files")
+		print(id .. " is max id file")
 	end
 	
-  print(numfiles .. " good files")
+  print(numfiles .. " all good files")
 
   self.bucket_count = bucketer:get_bucket_count(street)
   self.target_size = self.bucket_count * constants.players_count
