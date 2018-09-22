@@ -73,7 +73,8 @@ function DataStream:__init(street)
 	local f = io.open('good_files.table', "r")
 	if f then
 		f:close() 
-		local self.goodfiles = torch.load('good_files.table')
+		-- local 
+		self.goodfiles = torch.load('good_files.table')
 		print("list of good files loaded from backup")		
 		
 		-- for i=1, arr['train_count'] do
