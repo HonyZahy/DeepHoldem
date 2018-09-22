@@ -46,6 +46,7 @@ function DataStream:__init(street)
   local numfiles = 0
 
   local goodfiles = {}
+  local name_file = {}
 
   for filename,_ in pairs(filenames) do
     local res = string.find(filename, ".inputs")
@@ -54,6 +55,7 @@ function DataStream:__init(street)
       if filenames[targetname] ~= nil then
         numfiles = numfiles + 1
         goodfiles[numfiles] = filename:sub(0,res)
+		name_file[goodfiles[numfiles]] = true
       end
     end
   end
@@ -71,10 +73,11 @@ function DataStream:__init(street)
 	local f = io.open('good_files.table', "r")
 	if f then
 		f:close() 
-		self.goodfiles = torch.load('good_files.table')
+		local self.goodfiles = torch.load('good_files.table')
 		print("list of good files loaded from backup")		
 		
-		
+		-- for i=1, arr['train_count'] do
+			
 		
 		
 		
@@ -92,8 +95,12 @@ function DataStream:__init(street)
   local train_count = num_train * arguments.gen_batch_size
   local valid_count = num_valid * arguments.gen_batch_size
 
+  self.goodfiles['num_train'] = num_train
+  self.goodfiles['num_valid'] = num_valid
   self.goodfiles['train_count'] = train_count
   self.goodfiles['valid_count'] = valid_count
+  self.goodfiles['numfiles'] = numfiles
+
   torch.save(good_files_name, self.goodfiles)
   
   self.train_data_count = train_count
