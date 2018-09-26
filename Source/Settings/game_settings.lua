@@ -25,6 +25,6 @@ M.limit_bet_sizes = {2, 2, 4, 4}
 
 M.limit_bet_cap = 4
 
-M.nl = true
+M.nl = false
 
 return M
