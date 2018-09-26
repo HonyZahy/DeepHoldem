@@ -7,11 +7,20 @@ local nnBuilder = require 'Nn.net_builder'
 require 'Training.data_stream'
 local train = require 'Training.train'
 local arguments = require 'Settings.arguments'
+local game_settings = require 'Settings.game_settings'
 
 if #arg == 0 then
   print("Please specify the street. 1 = preflop, 4 = river")
   return
 end
+
+if game_settings.nl then
+  print("NoLimit version")
+else
+  print("Limit version")
+end
+	
+
 
 local street = tonumber(arg[1])
 local network = nnBuilder:build_net(street)
